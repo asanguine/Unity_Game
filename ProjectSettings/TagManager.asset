@@ -5,16 +5,21 @@ TagManager:
   serializedVersion: 2
   tags:
   - isGrounded
+  - Enemy
+  - Ground
+  - Coin
+  - GrapBlock
+  - Anchor
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Enemy
+  - GrapBlock
+  - Rope
   - 
   - 
   - 

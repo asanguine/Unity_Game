@@ -3,52 +3,91 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
 
-public class player : MonoBehaviour
-{
+public class player : MonoBehaviour {
     public float moveSpeed = 1f;
-    public float jumpForce = 10f;
+    public float jumpForce = 100f;
     private bool isGrounded;
     private float inputX;
     Animator animator;
     private Rigidbody2D rb;
 
-    void Start()
-    {
+    private bool isSwinging;
+    public bool isInAnchorRange = false;
+
+
+    [SerializeField]
+    private Hook hook;
+
+
+
+    void Start() {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+
+    void Update() {
         inputX = UnityEngine.Input.GetAxisRaw("Horizontal");
         animator.SetFloat("speed", Mathf.Abs(inputX));
-
-        isGrounded = Physics2D.OverlapCircle(transform.position, 0.2f, LayerMask.GetMask("Ground"));
-
 
         Vector3 movement = new Vector3(inputX, 0f, 0f);
         rb.velocity = new Vector2(movement.x * moveSpeed, rb.velocity.y);
 
-
-        if (inputX > 0)
-        {
+        if (inputX > 0) {
             transform.localScale = new Vector3(1, 1, 1);
         }
-        else if (inputX < 0)
-        {
+        else if (inputX < 0) {
             transform.localScale = new Vector3(-1, 1, 1);
         }
 
-        if (isGrounded && UnityEngine.Input.GetButtonDown("Jump"))
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            animator.SetBool("IsJumping", true);
-        }
-        else
-        {
-            animator.SetBool("IsJumping", false);
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Space)) {
+            if (isGrounded)
+                rb.AddForce(new Vector2(0, 100));
+            SpecialEffects.specialEffects.CreateSmoke(transform);
         }
 
+        if (UnityEngine.Input.GetKeyDown(KeyCode.F)) {
+            if (!isSwinging && isInAnchorRange) {
+                Debug.Log("F pressed and in Range");
+                hook.startSwinging();
+                isSwinging = true;
+            }
+            else if (isSwinging) {
+                Debug.Log("F pressed to drop");
+                hook.stopSwinging();
+                isSwinging = false;
+            }
+            else if (!isInAnchorRange) {
+                Debug.Log("F pressed but not in Range");
+            }
+        }
+    }
+
+
+
+    void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.tag == "Ground") {
+            isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision) {
+        if (collision.gameObject.tag == "Ground") {
+            isGrounded = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.tag == "Anchor") {
+            isInAnchorRange = true;
+            Debug.Log("Entered Anchor Range");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (collision.gameObject.tag == "Anchor") {
+            isInAnchorRange = false;
+            Debug.Log("Exited Anchor Range");
+        }
     }
 }
