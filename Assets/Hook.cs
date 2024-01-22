@@ -10,6 +10,9 @@ public class Hook : MonoBehaviour {
     private DistanceJoint2D distanceJoint;
     private bool isAttached = false;
     private GameObject player;
+    public float initialSwingForce = 5f;
+    public float initialSwingTorque = 1f;
+    public float swingForce = 1f;
 
     void Start() {
         ropeLineRenderer = GetComponent<LineRenderer>();
@@ -36,7 +39,10 @@ public class Hook : MonoBehaviour {
             distanceJoint.connectedAnchor = transform.position;
             distanceJoint.distance = distanceToPlayer;
 
+            Vector2 swingDirection = (player.transform.position - transform.position).normalized;
+            player.GetComponent<Rigidbody2D>().AddForce(swingDirection * initialSwingForce, ForceMode2D.Impulse);
 
+            player.GetComponent<Rigidbody2D>().AddTorque(initialSwingTorque, ForceMode2D.Impulse);
 
             isAttached = true;
         }
@@ -53,11 +59,14 @@ public class Hook : MonoBehaviour {
     void Update() {
         if (isAttached) {
             ropeLineRenderer.SetPosition(1, player.transform.position);
+
             if (player.transform.position.y > transform.position.y) {
                 Vector3 newPosition = player.transform.position;
                 newPosition.y = transform.position.y;
                 player.transform.position = newPosition;
+
             }
+
         }   
     }
 }
