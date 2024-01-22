@@ -12,7 +12,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         animator = gameObject.GetComponent<Animator>();
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
-        speed = 5;
+        speed = 10f;
         moveDirection = 1;
     }
     void FixedUpdate()
@@ -25,7 +25,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
        // animator.SetFloat("animSpeed", speed);
     }
-    public void FilpMoveDirection()
+    public void FlipMoveDirection()
     {
         moveDirection *= (-1);
         if (moveDirection < 0)

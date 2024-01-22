@@ -13,7 +13,7 @@ public class EdgeDetector : MonoBehaviour
     {
         if (col.gameObject.tag == "Ground")
         {
-            enemyBehaviour.FilpMoveDirection();
+            enemyBehaviour.FlipMoveDirection();
         }
     }
 }

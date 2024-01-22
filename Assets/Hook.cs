@@ -9,10 +9,11 @@ public class Hook : MonoBehaviour {
     private LineRenderer ropeLineRenderer;
     private DistanceJoint2D distanceJoint;
     private bool isAttached = false;
-    private GameObject player;
+    public GameObject player;
     public float initialSwingForce = 5f;
     public float initialSwingTorque = 1f;
     public float swingForce = 1f;
+
 
     void Start() {
         ropeLineRenderer = GetComponent<LineRenderer>();
@@ -28,6 +29,7 @@ public class Hook : MonoBehaviour {
 
     public void startSwinging() {
         if (!isAttached && player != null) {
+            player.GetComponent<player>().isSwinging = true;
             float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
 
             
@@ -45,14 +47,27 @@ public class Hook : MonoBehaviour {
             player.GetComponent<Rigidbody2D>().AddTorque(initialSwingTorque, ForceMode2D.Impulse);
 
             isAttached = true;
+
         }
     }
 
     public void stopSwinging() {
         if (isAttached) {
+            player.GetComponent<player>().isSwinging = false;
+
+            Vector2 ropeDirection = (player.transform.position - transform.position).normalized;
+
+            // Adjust the release force based on the swing force applied during the swing
+            float throwForce = swingForce;
+
+            // Apply the calculated velocity to the player's rigidbody
+            player.GetComponent<Rigidbody2D>().velocity = ropeDirection * throwForce;
+
+
             ropeLineRenderer.enabled = false;
             distanceJoint.enabled = false;
             isAttached = false;
+            
         }
     }
 
