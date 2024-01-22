@@ -10,7 +10,7 @@ public class EnemyInteraction : MonoBehaviour
     void Start()
     {
         isVarnuable = true;
-        uiInstanceController = GameObject.Find("HeartContainer").
+        uiInstanceController = GameObject.Find("heart").
         GetComponent<UiInstanceController>();
     }
     private void OnTriggerEnter2D(Collider2D collision)

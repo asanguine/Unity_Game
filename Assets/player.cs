@@ -15,7 +15,7 @@ public class player : MonoBehaviour {
     public bool isSwinging;
     public bool isInAnchorRange = false;
     private Transform hookTransform;
-
+    public HeartUI heartUI;
     [SerializeField]
     private Hook hook;
 
@@ -33,6 +33,7 @@ public class player : MonoBehaviour {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         hookTransform = GameObject.FindGameObjectWithTag("Anchor").transform;
+        heartUI = GameObject.FindGameObjectWithTag("Canvas").GetComponent<HeartUI>();
     }
 
 
@@ -81,6 +82,9 @@ public class player : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Ground") {
             isGrounded = true;
+        }
+        if (collision.gameObject.tag == "Enemy") {
+            heartUI.LoseHeart();
         }
     }
 

@@ -10,6 +10,7 @@ TagManager:
   - Coin
   - GrapBlock
   - Anchor
+  - Canvas
   layers:
   - Default
   - TransparentFX
