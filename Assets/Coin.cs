@@ -6,10 +6,13 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     public static int coins;
+    public AudioSource coinSound;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -17,6 +20,7 @@ public class Coin : MonoBehaviour
         if (col.CompareTag("Player"))
         {
             coins++;
+            coinSound.Play();
             Destroy(gameObject);
         }
     }
