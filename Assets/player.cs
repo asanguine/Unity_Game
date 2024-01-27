@@ -15,9 +15,13 @@ public class player : MonoBehaviour {
     public bool isSwinging;
     public bool isInAnchorRange = false;
     private Transform hookTransform;
-    public HeartUI heartUI;
-    [SerializeField]
-    private Hook hook;
+
+
+    [SerializeField] private Hook hook;
+    private Health health;
+
+    private bool canTakeDamage = true;
+    public float damageCooldown = 1f;
 
 
     public void makeThingsWorkAgain() {
@@ -32,8 +36,8 @@ public class player : MonoBehaviour {
     void Start() {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        health = GetComponent<Health>();
         hookTransform = GameObject.FindGameObjectWithTag("Anchor").transform;
-        heartUI = GameObject.FindGameObjectWithTag("Canvas").GetComponent<HeartUI>();
     }
 
 
@@ -75,6 +79,8 @@ public class player : MonoBehaviour {
                 Debug.Log("F pressed but not in Range");
             }
         }
+
+
     }
 
 
@@ -83,9 +89,19 @@ public class player : MonoBehaviour {
         if (collision.gameObject.tag == "Ground") {
             isGrounded = true;
         }
-        if (collision.gameObject.tag == "Enemy") {
-            heartUI.LoseHeart();
+        if (collision.gameObject.tag == "Enemy" && canTakeDamage) {
+            //health.TakeDamage(1);
+            Debug.Log("Took damage");
+            Debug.Log("Current health: " + health.currentHealth);
+
+            //StartCoroutine(DamageCooldown());
         }
+    }
+
+    IEnumerator DamageCooldown() {
+        canTakeDamage = false;
+        yield return new WaitForSeconds(damageCooldown);
+        canTakeDamage = true;
     }
 
     void OnCollisionExit2D(Collision2D collision) {

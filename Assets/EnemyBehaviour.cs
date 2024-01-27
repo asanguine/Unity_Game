@@ -22,10 +22,7 @@ public class EnemyBehaviour : MonoBehaviour
         moveDirection * speed, rigidbody.velocity.y);
     }
     
-    void Update()
-    {
-       // animator.SetFloat("animSpeed", speed);
-    }
+
     public void FlipMoveDirection()
     {
         moveDirection *= (-1);

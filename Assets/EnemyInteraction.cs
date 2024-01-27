@@ -10,14 +10,14 @@ public class EnemyInteraction : MonoBehaviour
     void Start()
     {
         isVarnuable = true;
-        uiInstanceController = GameObject.Find("heart").
+        //uiInstanceController = GameObject.Find("heart").
         GetComponent<UiInstanceController>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.tag == "Enemy" && isVarnuable)
         {
-            uiInstanceController.DestroyInstance();
+           // uiInstanceController.DestroyInstance();
             StartCoroutine(Invarnuability());
         }
     }
