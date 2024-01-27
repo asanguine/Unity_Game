@@ -20,8 +20,9 @@ public class player : MonoBehaviour {
     [SerializeField] private Hook hook;
     private Health health;
 
-    private bool canTakeDamage = true;
     public float damageCooldown = 1f;
+
+    //float nextDamage = 1;
 
 
     public void makeThingsWorkAgain() {
@@ -89,20 +90,17 @@ public class player : MonoBehaviour {
         if (collision.gameObject.tag == "Ground") {
             isGrounded = true;
         }
-        if (collision.gameObject.tag == "Enemy" && canTakeDamage) {
-            //health.TakeDamage(1);
-            Debug.Log("Took damage");
-            Debug.Log("Current health: " + health.currentHealth);
 
-            //StartCoroutine(DamageCooldown());
-        }
+        /*if (collision.gameObject.tag == "Enemy") {
+            if (Time.time > nextDamage) {
+                health.TakeDamage(1);
+                //Debug.Log("Took damage");
+                //Debug.Log("Current health: " + health.currentHealth);
+                nextDamage = Time.time + damageCooldown;
+            }
+        }*/
     }
 
-    IEnumerator DamageCooldown() {
-        canTakeDamage = false;
-        yield return new WaitForSeconds(damageCooldown);
-        canTakeDamage = true;
-    }
 
     void OnCollisionExit2D(Collision2D collision) {
         if (collision.gameObject.tag == "Ground") {

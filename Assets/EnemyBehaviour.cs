@@ -21,7 +21,10 @@ public class EnemyBehaviour : MonoBehaviour
         rigidbody.velocity = new Vector2(Time.deltaTime *
         moveDirection * speed, rigidbody.velocity.y);
     }
-    
+
+    private void Update() {
+        //animator.SetFloat("animSpeed", speed);
+    }
 
     public void FlipMoveDirection()
     {
@@ -39,6 +42,13 @@ public class EnemyBehaviour : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.tag == "Player") {
+            Debug.Log("Took damage");
+            collision.gameObject.GetComponent<Health>().TakeDamage(1);
+
+        }
+
+
         if (passThroughLayers == (passThroughLayers | (1 << collision.gameObject.layer))) {
             Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.collider);
         }
